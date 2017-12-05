@@ -20,6 +20,7 @@ void mostrar_produtos(Produtos* produtos);
 Produtos* abrir(Produtos* produtos);
 void busca(Produtos *produtos, char busca[20]);
 float gastos_mensais (Produtos *produtos);
+void max(Produtos *produtos);
 
 main()
 {
@@ -29,7 +30,7 @@ main()
     Produtos *produtos = NULL;
     do
     {
-        printf("\n\tMENU:\n\t0-Sair\n\t1-Inserir gastos\n\t2-Abrir dados\n\t3-Mostrar Planner\n\t4-Pesquisa\n\t5-Gastos mensais\n\t");
+        printf("\n\tMENU:\n\t0-Sair\n\t1-Inserir gastos\n\t2-Abrir dados\n\t3-Mostrar Planner\n\t4-Pesquisa por produto\n\t5-Pesquisa custo max\n\t6-Gastos mensais\n\t");
         printf("Entre com opcao->");
         scanf("%d", &opcao);
 
@@ -54,6 +55,9 @@ main()
              busca(produtos,buscado);
             break;
         case 5:
+            max(produtos);
+            break;
+        case 6:
            gastos = gastos_mensais(produtos);
            if(gastos == 0){
                printf("\n\t---NAO HA GASTOS MENSAL---\n\t");
@@ -140,7 +144,7 @@ void mostrar_produtos (Produtos* produtos)
     if(produtos != NULL)
     {
         printf("\n\tPRODUTO: %s\n", produtos->nome);
-        printf("\n\tPRECO: %f\n", produtos->preco);
+        printf("\n\tPRECO: %4.2f\n", produtos->preco);
         printf("\n\tQNT.: %d\n", produtos->quantidade);
         printf("\n\tDATA: %d\n", produtos->mes);
         mostrar_produtos(produtos->prox);
@@ -156,17 +160,17 @@ Produtos* abrir(Produtos* produtos)
 
     FILE *arq=fopen("PLANNER.txt", "r");
 
-    a=fscanf(arq, "%s", &nome);
+    a=fscanf(arq, "%[^\n]", &nome);
 
     while (a!= EOF)
     {
         novo =  (Produtos *) malloc(sizeof(Produtos));
         strcpy(novo->nome, nome);
-        fscanf(arq,"%f", &novo->preco);
-        fscanf(arq,"%d", &novo->quantidade);
-        fscanf(arq,"%d", &novo->mes);
+        fscanf(arq,"%f\n", &novo->preco);
+        fscanf(arq,"%d\n", &novo->quantidade);
+        fscanf(arq,"%d\n", &novo->mes);
         produtos = inserir(produtos, novo);
-        a=fscanf(arq, "%s", &nome);
+        a=fscanf(arq, "%[^\n]", &nome);
     }
     fclose(arq);
     return produtos;
@@ -212,3 +216,36 @@ while(produtos != NULL){
 
 return soma;
 }
+
+void max(Produtos *produtos)
+{float max = 0;
+float soma = 0;
+Produtos *maximo = NULL;
+
+while(produtos != NULL){
+        soma = (produtos->preco * produtos->quantidade);
+        if(soma > max){
+           max = soma;
+           maximo = produtos;
+           produtos = produtos->prox;
+          }else{
+          produtos = produtos->prox;
+          }
+        }
+
+printf("\n\t---GASTO MAXIMO---\n\t");
+printf("\n\t%s", maximo->nome);
+printf("\n\tGasto maximo->%4.2f", max);
+}
+
+
+
+
+
+
+
+
+
+
+
+
