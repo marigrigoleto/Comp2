@@ -1,3 +1,13 @@
+/*======================================================================================================================
+
+UTFPr Engenharia Mecânica
+Mariana Mayer Grigoleto
+RA: 1907751
+
+Projeto final - Planilha de gastos (funções de gasto máximo, pesquisa por gasto, gasto mensal e gravação em arquivo)
+
+=======================================================================================================================*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -112,7 +122,7 @@ Produtos* inserir_ordenado(Produtos *produtos)
     char name[80];
     Produtos *novo =  (Produtos *) malloc(sizeof(Produtos));
 
-    printf("\n\tEntre com nome do produto:");
+    printf("\n\tDescricao do gasto:");
     scanfstr(name);
     int i, a = strlen(name);
     for(i = 0; i < a; i++){
@@ -235,17 +245,5 @@ while(produtos != NULL){
 
 printf("\n\t---GASTO MAXIMO---\n\t");
 printf("\n\t%s", maximo->nome);
-printf("\n\tGasto maximo->%4.2f", max);
+printf("\n\tGasto maximo->%4.2f\n\t", max);
 }
-
-
-
-
-
-
-
-
-
-
-
-
